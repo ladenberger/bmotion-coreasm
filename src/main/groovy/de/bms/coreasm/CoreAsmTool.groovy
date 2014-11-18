@@ -308,9 +308,4 @@ public class CoreAsmTool implements ITool {
         }
     }
 
-    @Override
-    void refresh() {
-
-    }
-
 }
