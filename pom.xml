@@ -9,6 +9,34 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <repositories>
+        <repository>
+            <id>cobra</id>
+            <name>cobra</name>
+            <url>http://cobra.cs.uni-duesseldorf.de/artifactory/repo</url>
+        </repository>
+    </repositories>
+
+    <scm>
+        <connection>scm:git:ssh://github.com/ladenberger/bmotion-coreasm.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/ladenberger/bmotion-coreasm.git</developerConnection>
+        <url>https://github.com/ladenberger/bmotion-coreasm</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>cobra.cs.uni-duesseldorf.de</id>
+            <name>cobra.cs.uni-duesseldorf.de-releases</name>
+            <url>http://cobra.cs.uni-duesseldorf.de/artifactory/libs-release-local</url>
+        </repository>
+        <snapshotRepository>
+            <id>cobra.cs.uni-duesseldorf.de</id>
+            <name>cobra.cs.uni-duesseldorf.de-snapshots</name>
+            <url>http://cobra.cs.uni-duesseldorf.de/artifactory/libs-snapshot-local</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <build>
 
         <plugins>
