@@ -3,46 +3,44 @@ package de.bms.coreasm
 import de.bms.itool.ITool
 import de.bms.itool.ToolRegistry
 import groovy.util.logging.Slf4j
-import org.coreasm.engine.CoreASMEngine
-import org.coreasm.engine.Engine
-import org.coreasm.engine.absstorage.*
-import org.coreasm.engine.plugin.Plugin
-import org.coreasm.engine.plugins.BasicASMPlugins
-import org.coreasm.engine.plugins.StandardPlugins
-import org.coreasm.engine.plugins.abstraction.AbstractionPlugin
-import org.coreasm.engine.plugins.bag.BagPlugin
-import org.coreasm.engine.plugins.blockrule.BlockRulePlugin
-import org.coreasm.engine.plugins.blockrule.TabBlocksPlugin
+import org.coreasm.engine.Engine;
+import org.coreasm.engine.plugin.Plugin;
+import org.coreasm.engine.plugins.abstraction.AbstractionPlugin;
+import org.coreasm.engine.plugins.modularity.ModularityPlugin;
+import org.coreasm.engine.plugins.bag.BagPlugin;
+import org.coreasm.engine.plugins.number.NumberPlugin;
+import org.coreasm.engine.plugins.BasicASMPlugins;
+import org.coreasm.engine.plugins.options.OptionsPlugin;
+import org.coreasm.engine.plugins.blockrule.BlockRulePlugin;
+import org.coreasm.engine.plugins.plotter.PlotterPlugin
 import org.coreasm.engine.plugins.caserule.CaseRulePlugin
+import org.coreasm.engine.plugins.predicatelogic.PredicateLogicPlugin
 import org.coreasm.engine.plugins.chooserule.ChooseRulePlugin
+import org.coreasm.engine.plugins.property.PropertyPlugin
 import org.coreasm.engine.plugins.collection.CollectionPlugin
+import org.coreasm.engine.plugins.queue.QueuePlugin
 import org.coreasm.engine.plugins.conditionalrule.ConditionalRulePlugin
 import org.coreasm.engine.plugins.debuginfo.DebugInfoPlugin
-import org.coreasm.engine.plugins.extendrule.ExtendRulePlugin
-import org.coreasm.engine.plugins.forallrule.ForallRulePlugin
-import org.coreasm.engine.plugins.grammar.GrammarPlugin
-import org.coreasm.engine.plugins.io.IOPlugin
-import org.coreasm.engine.plugins.kernelextensions.KernelExtensionsPlugin
-import org.coreasm.engine.plugins.letrule.LetRulePlugin
-import org.coreasm.engine.plugins.list.ListPlugin
-import org.coreasm.engine.plugins.map.MapPlugin
-import org.coreasm.engine.plugins.modularity.ModularityPlugin
-import org.coreasm.engine.plugins.number.NumberPlugin
-import org.coreasm.engine.plugins.options.OptionsPlugin
-import org.coreasm.engine.plugins.plotter.PlotterPlugin
-import org.coreasm.engine.plugins.predicatelogic.PredicateLogicPlugin
-import org.coreasm.engine.plugins.property.PropertyPlugin
-import org.coreasm.engine.plugins.queue.QueuePlugin
-import org.coreasm.engine.plugins.sandbox.SandboxPlugin
 import org.coreasm.engine.plugins.schedulingpolicies.SchedulingPoliciesPlugin
+import org.coreasm.engine.plugins.extendrule.ExtendRulePlugin
 import org.coreasm.engine.plugins.set.SetPlugin
+import org.coreasm.engine.plugins.forallrule.ForallRulePlugin
 import org.coreasm.engine.plugins.signature.SignaturePlugin
 import org.coreasm.engine.plugins.stack.StackPlugin
+import org.coreasm.engine.plugins.io.IOPlugin
+import org.coreasm.engine.plugins.StandardPlugins
 import org.coreasm.engine.plugins.step.StepPlugin
+import org.coreasm.engine.plugins.kernelextensions.KernelExtensionsPlugin
 import org.coreasm.engine.plugins.string.StringPlugin
+import org.coreasm.engine.plugins.letrule.LetRulePlugin
+import org.coreasm.engine.plugins.blockrule.TabBlocksPlugin
+import org.coreasm.engine.plugins.list.ListPlugin
 import org.coreasm.engine.plugins.time.TimePlugin
+import org.coreasm.engine.plugins.map.MapPlugin
 import org.coreasm.engine.plugins.tree.TreePlugin
 import org.coreasm.engine.plugins.turboasm.TurboASMPlugin
+import org.coreasm.engine.CoreASMEngine
+import org.coreasm.engine.absstorage.*
 
 @Slf4j
 public class CoreAsmTool implements ITool {
@@ -72,14 +70,12 @@ public class CoreAsmTool implements ITool {
                                new CollectionPlugin(), // CollectionPlugin
                                new QueuePlugin(), // QueuePlugin
                                new ConditionalRulePlugin(), // ConditionalRulePlugin
-                               new SandboxPlugin(), // SandboxPlugin
                                new DebugInfoPlugin(), // DebugInfoPlugin
                                new SchedulingPoliciesPlugin(), // SchedulingPolicies
                                new ExtendRulePlugin(), // ExtendRulePlugin
                                new SetPlugin(), // SetPlugin
                                new ForallRulePlugin(), // ForallRulePlugin
                                // SignalsPlugin
-                               new GrammarPlugin(), // GrammarPlugin
                                new SignaturePlugin(), // SignaturePlugin
                                // GraphPlugin
                                new StackPlugin(), // StackPlugin
@@ -303,6 +299,7 @@ public class CoreAsmTool implements ITool {
             e.waitWhileBusy();
             e.initialize();
             e.waitWhileBusy();
+
         } catch (Exception e) {
             e.printStackTrace()
         }
