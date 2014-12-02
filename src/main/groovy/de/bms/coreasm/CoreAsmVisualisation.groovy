@@ -1,55 +1,51 @@
 package de.bms.coreasm
 
-import de.bms.itool.ITool
-import de.bms.itool.ToolRegistry
+import de.bms.BMotion
+import de.bms.ImpossibleStepException
 import groovy.util.logging.Slf4j
-import org.coreasm.engine.Engine;
-import org.coreasm.engine.plugin.Plugin;
-import org.coreasm.engine.plugins.abstraction.AbstractionPlugin;
-import org.coreasm.engine.plugins.modularity.ModularityPlugin;
-import org.coreasm.engine.plugins.bag.BagPlugin;
-import org.coreasm.engine.plugins.number.NumberPlugin;
-import org.coreasm.engine.plugins.BasicASMPlugins;
-import org.coreasm.engine.plugins.options.OptionsPlugin;
-import org.coreasm.engine.plugins.blockrule.BlockRulePlugin;
-import org.coreasm.engine.plugins.plotter.PlotterPlugin
+import org.coreasm.engine.CoreASMEngine
+import org.coreasm.engine.Engine
+import org.coreasm.engine.absstorage.*
+import org.coreasm.engine.plugin.Plugin
+import org.coreasm.engine.plugins.BasicASMPlugins
+import org.coreasm.engine.plugins.StandardPlugins
+import org.coreasm.engine.plugins.abstraction.AbstractionPlugin
+import org.coreasm.engine.plugins.bag.BagPlugin
+import org.coreasm.engine.plugins.blockrule.BlockRulePlugin
+import org.coreasm.engine.plugins.blockrule.TabBlocksPlugin
 import org.coreasm.engine.plugins.caserule.CaseRulePlugin
-import org.coreasm.engine.plugins.predicatelogic.PredicateLogicPlugin
 import org.coreasm.engine.plugins.chooserule.ChooseRulePlugin
-import org.coreasm.engine.plugins.property.PropertyPlugin
 import org.coreasm.engine.plugins.collection.CollectionPlugin
-import org.coreasm.engine.plugins.queue.QueuePlugin
 import org.coreasm.engine.plugins.conditionalrule.ConditionalRulePlugin
 import org.coreasm.engine.plugins.debuginfo.DebugInfoPlugin
-import org.coreasm.engine.plugins.schedulingpolicies.SchedulingPoliciesPlugin
 import org.coreasm.engine.plugins.extendrule.ExtendRulePlugin
-import org.coreasm.engine.plugins.set.SetPlugin
 import org.coreasm.engine.plugins.forallrule.ForallRulePlugin
+import org.coreasm.engine.plugins.io.IOPlugin
+import org.coreasm.engine.plugins.kernelextensions.KernelExtensionsPlugin
+import org.coreasm.engine.plugins.letrule.LetRulePlugin
+import org.coreasm.engine.plugins.list.ListPlugin
+import org.coreasm.engine.plugins.map.MapPlugin
+import org.coreasm.engine.plugins.modularity.ModularityPlugin
+import org.coreasm.engine.plugins.number.NumberPlugin
+import org.coreasm.engine.plugins.options.OptionsPlugin
+import org.coreasm.engine.plugins.plotter.PlotterPlugin
+import org.coreasm.engine.plugins.predicatelogic.PredicateLogicPlugin
+import org.coreasm.engine.plugins.property.PropertyPlugin
+import org.coreasm.engine.plugins.queue.QueuePlugin
+import org.coreasm.engine.plugins.schedulingpolicies.SchedulingPoliciesPlugin
+import org.coreasm.engine.plugins.set.SetPlugin
 import org.coreasm.engine.plugins.signature.SignaturePlugin
 import org.coreasm.engine.plugins.stack.StackPlugin
-import org.coreasm.engine.plugins.io.IOPlugin
-import org.coreasm.engine.plugins.StandardPlugins
 import org.coreasm.engine.plugins.step.StepPlugin
-import org.coreasm.engine.plugins.kernelextensions.KernelExtensionsPlugin
 import org.coreasm.engine.plugins.string.StringPlugin
-import org.coreasm.engine.plugins.letrule.LetRulePlugin
-import org.coreasm.engine.plugins.blockrule.TabBlocksPlugin
-import org.coreasm.engine.plugins.list.ListPlugin
 import org.coreasm.engine.plugins.time.TimePlugin
-import org.coreasm.engine.plugins.map.MapPlugin
 import org.coreasm.engine.plugins.tree.TreePlugin
 import org.coreasm.engine.plugins.turboasm.TurboASMPlugin
-import org.coreasm.engine.CoreASMEngine
-import org.coreasm.engine.absstorage.*
 
 @Slf4j
-public class CoreAsmTool implements ITool {
+public class CoreAsmVisualisation extends BMotion {
 
     def CoreASMEngine e;
-
-    private String toolId;
-
-    private ToolRegistry toolRegistry;
 
     private class AsmToolEngine extends Engine {
         @Override
@@ -102,31 +98,24 @@ public class CoreAsmTool implements ITool {
         }
     }
 
-    public CoreAsmTool(String toolId, ToolRegistry toolRegistry) {
-        this.toolId = toolId
-        this.toolRegistry = toolRegistry
+    public CoreAsmVisualisation(final UUID sessionId, final String templatePath) {
+        super(sessionId, templatePath);
     }
 
     @Override
-    public boolean canBacktrack() {
-        return false;
-    }
-
-    @Override
-    public String doStep(String stateref, String event, String... parameters) {
+    public Object executeEvent(final String event, final data) throws ImpossibleStepException {
         e.step();
         e.waitWhileBusy();
         StringBuffer output = new StringBuffer();
         String state = getCurrentState();
         output.append("{ \"mode\": \"" + e.getEngineMode().toString() + "\", \"state\": " + state);
-        toolRegistry.notifyToolChange(this);
         return output.toString();
     }
 
     /**
      * Returns the value of a location    */
     @Override
-    public String evaluate(String stateref, String lname) {
+    public Object eval(String lname) {
         State state = e.getState();
         Map<String, FunctionElement> funcs = state.getFunctions();
 
@@ -164,7 +153,6 @@ public class CoreAsmTool implements ITool {
         return json;
     }
 
-    @Override
     public String getCurrentState() {
         Map<String, AbstractUniverse> universeEntries = e.getState()
                 .getUniverses();
@@ -273,7 +261,6 @@ public class CoreAsmTool implements ITool {
 
     }
 
-    @Override
     public List<String> getErrors(String arg0, String arg1) {
         List<String> errors = new ArrayList<String>();
         errors.add(e.getEngineMode().toString());
@@ -282,13 +269,9 @@ public class CoreAsmTool implements ITool {
         return errors;
     }
 
-    @Override
-    public String getName() {
-        return toolId;
-    }
 
     @Override
-    void loadModel(String modelPath) {
+    void loadModel(File modelFile, boolean force) {
         log.info "Loading model " + modelPath
         if (e == null)
             e = new AsmToolEngine();
@@ -303,6 +286,11 @@ public class CoreAsmTool implements ITool {
         } catch (Exception e) {
             e.printStackTrace()
         }
+    }
+
+    @Override
+    void refresh() {
+
     }
 
 }

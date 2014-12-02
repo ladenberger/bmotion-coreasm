@@ -1,15 +1,14 @@
 package de.bms.coreasm
 
-import de.bms.itool.ITool
-import de.bms.itool.ToolRegistry
-import de.bms.server.BMotionIToolProvider
+import de.bms.BMotion
+import de.bms.BMotionVisualisationProvider
 
-public class CoreAsmIToolProvider implements BMotionIToolProvider {
+public class CoreAsmIToolProvider implements BMotionVisualisationProvider {
 
     @Override
-    ITool get(String tool, ToolRegistry toolRegistry) {
-        if ("CoreAsm".equals(tool)) {
-            return new CoreAsmTool(UUID.randomUUID().toString(), toolRegistry)
+    BMotion get(String type, String templatePath) {
+        if ("CoreAsm".equals(type)) {
+            return new CoreAsmVisualisation(UUID.randomUUID(), templatePath)
         }
         return null
     }
