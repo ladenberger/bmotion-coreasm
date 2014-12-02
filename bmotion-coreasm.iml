@@ -11,19 +11,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/org.coreasm.util-1.7.1-SNAPSHOT.jar!/" />
-          <root url="jar://$MODULE_DIR$/libs/org.coreasm.engine-1.6.5-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$MODULE_DIR$/libs/org.coreasm.engine-1.6.5-SNAPSHOT.jar!/doc/plug-in_howto/java-src/firstPlugin/src" />
-          <root url="jar://$MODULE_DIR$/libs/org.coreasm.engine-1.6.5-SNAPSHOT.jar!/doc/plug-in_howto/java-src/secondPlugin/src" />
-        </SOURCES>
-      </library>
-    </orderEntry>
     <orderEntry type="module" module-name="bmotion" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.7" level="project" />
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.1.2" level="project" />
@@ -48,5 +35,18 @@
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-continuation:8.1.8.v20121106" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-http:8.1.8.v20121106" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-util:8.1.8.v20121106" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/org.coreasm.util-1.7.1-SNAPSHOT.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/org.coreasm.engine-1.6.5-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/libs/org.coreasm.engine-1.6.5-SNAPSHOT.jar!/doc/plug-in_howto/java-src/firstPlugin/src" />
+          <root url="jar://$MODULE_DIR$/libs/org.coreasm.engine-1.6.5-SNAPSHOT.jar!/doc/plug-in_howto/java-src/secondPlugin/src" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>

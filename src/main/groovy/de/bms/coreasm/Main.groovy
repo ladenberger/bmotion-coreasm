@@ -11,7 +11,7 @@ public class Main {
         // Start BMotion Server
         BMotionServer server = new BMotionServer(args)
         server.setVisualisationProvider(new CoreAsmVisualisationProvider())
-        String[] paths = [Resources.getResource("coreasm").toString()]
+        URL[] paths = [Resources.getResource("coreasm")]
         server.setResourcePaths(paths)
         server.start()
         openBrowser(server)

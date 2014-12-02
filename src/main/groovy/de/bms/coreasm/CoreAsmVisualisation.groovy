@@ -272,12 +272,11 @@ public class CoreAsmVisualisation extends BMotion {
 
     @Override
     void loadModel(File modelFile, boolean force) {
-        log.info "Loading model " + modelPath
+        log.info "Loading model " + modelFile
         if (e == null)
             e = new AsmToolEngine();
         try {
-            System.out.println(modelPath)
-            FileInputStream fi = new FileInputStream(modelPath)
+            FileInputStream fi = new FileInputStream(modelFile)
             e.loadSpecification(new InputStreamReader(fi));
             e.waitWhileBusy();
             e.initialize();
