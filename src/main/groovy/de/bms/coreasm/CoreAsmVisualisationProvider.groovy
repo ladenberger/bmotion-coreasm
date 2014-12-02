@@ -3,7 +3,7 @@ package de.bms.coreasm
 import de.bms.BMotion
 import de.bms.BMotionVisualisationProvider
 
-public class CoreAsmIToolProvider implements BMotionVisualisationProvider {
+public class CoreAsmVisualisationProvider implements BMotionVisualisationProvider {
 
     @Override
     BMotion get(String type, String templatePath) {

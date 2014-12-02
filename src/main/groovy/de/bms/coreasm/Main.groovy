@@ -10,22 +10,10 @@ public class Main {
 
         // Start BMotion Server
         BMotionServer server = new BMotionServer(args)
-
-        //server.setScriptEngineProvider(new ProBScriptEngineProvider())
-        server.setIToolProvider(new CoreAsmIToolProvider())
-
+        server.setVisualisationProvider(new CoreAsmVisualisationProvider())
         String[] paths = [Resources.getResource("coreasm").toString()]
         server.setResourcePaths(paths)
-
         server.start()
-
-        /*server.socketServer.getServer().addConnectListener(new ConnectListener() {
-            @Override
-            public void onConnect(SocketIOClient client) {
-                client.sendEvent("initProB", [host: "localhost", port: probPort])
-            }
-        });*/
-
         openBrowser(server)
 
     }
