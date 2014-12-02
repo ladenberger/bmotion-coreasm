@@ -109,6 +109,7 @@ public class CoreAsmVisualisation extends BMotion {
         StringBuffer output = new StringBuffer();
         String state = getCurrentState();
         output.append("{ \"mode\": \"" + e.getEngineMode().toString() + "\", \"state\": " + state);
+        checkObserver()
         return output.toString();
     }
 
@@ -289,7 +290,7 @@ public class CoreAsmVisualisation extends BMotion {
 
     @Override
     void refresh() {
-
+        checkObserver()
     }
 
 }

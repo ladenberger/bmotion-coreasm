@@ -1,1 +1,6 @@
-System.out.println(bms.e.getState().getFunctions())
+transform("#mydiv") {
+
+    set "content", "hello"
+    register(bms)
+
+}
