@@ -19,7 +19,7 @@ public class CoreAsmVisualisation extends BMotion {
     }
 
     @Override
-    public Object executeEvent(final String event, final data) throws ImpossibleStepException {
+    public Object executeEvent(String event, final data) throws ImpossibleStepException {
         engine.step();
         engine.waitWhileBusy();
         StringBuffer output = new StringBuffer();

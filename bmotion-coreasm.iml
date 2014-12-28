@@ -11,6 +11,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="org.coreasm.engine-1.6.5-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="org.coreasm.util-1.7.1-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="bmotion" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.7" level="project" />
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.1.2" level="project" />
@@ -37,7 +39,5 @@
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-util:8.1.8.v20121106" level="project" />
     <orderEntry type="library" name="Maven: org.jparsec:jparsec:2.1" level="project" />
     <orderEntry type="library" name="Maven: cglib:cglib-nodep:2.1_3" level="project" />
-    <orderEntry type="library" name="org.coreasm.engine-1.6.5-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="org.coreasm.util-1.7.1-SNAPSHOT" level="project" />
   </component>
 </module>
