@@ -112,6 +112,12 @@
             <artifactId>jparsec</artifactId>
             <version>2.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.coreasm</groupId>
+            <artifactId>org.coreasm.engine</artifactId>
+            <version>1.6.3-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>
