@@ -4,99 +4,15 @@ import de.bms.BMotion
 import de.bms.ImpossibleStepException
 import groovy.util.logging.Slf4j
 import org.coreasm.engine.CoreASMEngine
+import org.coreasm.engine.CoreASMEngineFactory
 import org.coreasm.engine.Engine
 import org.coreasm.engine.absstorage.*
-import org.coreasm.engine.plugin.Plugin
-import org.coreasm.engine.plugins.BasicASMPlugins
-import org.coreasm.engine.plugins.StandardPlugins
-import org.coreasm.engine.plugins.abstraction.AbstractionPlugin
-import org.coreasm.engine.plugins.bag.BagPlugin
-import org.coreasm.engine.plugins.blockrule.BlockRulePlugin
 import org.coreasm.engine.plugins.blockrule.TabBlocksPlugin
-import org.coreasm.engine.plugins.caserule.CaseRulePlugin
-import org.coreasm.engine.plugins.chooserule.ChooseRulePlugin
-import org.coreasm.engine.plugins.collection.CollectionPlugin
-import org.coreasm.engine.plugins.conditionalrule.ConditionalRulePlugin
-import org.coreasm.engine.plugins.debuginfo.DebugInfoPlugin
-import org.coreasm.engine.plugins.extendrule.ExtendRulePlugin
-import org.coreasm.engine.plugins.forallrule.ForallRulePlugin
-import org.coreasm.engine.plugins.io.IOPlugin
-import org.coreasm.engine.plugins.kernelextensions.KernelExtensionsPlugin
-import org.coreasm.engine.plugins.letrule.LetRulePlugin
-import org.coreasm.engine.plugins.list.ListPlugin
-import org.coreasm.engine.plugins.map.MapPlugin
-import org.coreasm.engine.plugins.modularity.ModularityPlugin
-import org.coreasm.engine.plugins.number.NumberPlugin
-import org.coreasm.engine.plugins.options.OptionsPlugin
-import org.coreasm.engine.plugins.plotter.PlotterPlugin
-import org.coreasm.engine.plugins.predicatelogic.PredicateLogicPlugin
-import org.coreasm.engine.plugins.property.PropertyPlugin
-import org.coreasm.engine.plugins.queue.QueuePlugin
-import org.coreasm.engine.plugins.schedulingpolicies.SchedulingPoliciesPlugin
-import org.coreasm.engine.plugins.set.SetPlugin
-import org.coreasm.engine.plugins.signature.SignaturePlugin
-import org.coreasm.engine.plugins.stack.StackPlugin
-import org.coreasm.engine.plugins.step.StepPlugin
-import org.coreasm.engine.plugins.string.StringPlugin
-import org.coreasm.engine.plugins.time.TimePlugin
-import org.coreasm.engine.plugins.tree.TreePlugin
-import org.coreasm.engine.plugins.turboasm.TurboASMPlugin
 
 @Slf4j
 public class CoreAsmVisualisation extends BMotion {
 
-    def CoreASMEngine e;
-
-    private class AsmToolEngine extends Engine {
-        @Override
-        protected void loadCatalog() throws IOException {
-            Plugin[] p2Load = [new AbstractionPlugin(), // AbstractionPlugin
-                               new ModularityPlugin(), // ModularityPlugin
-                               // BaarunPlugin
-                               new NumberPlugin(), // NumberPlugin
-                               new BagPlugin(), // BagPlugin
-                               new BasicASMPlugins(), // BasicASMPlugins
-                               new OptionsPlugin(), // OptionsPlugin
-                               new BlockRulePlugin(), // BlockRulePlugin
-                               new PlotterPlugin(), // PlotterPlugin
-                               new CaseRulePlugin(), // CaseRulePlugin
-                               new PredicateLogicPlugin(), // PredicateLogicPlugin
-                               new ChooseRulePlugin(), // ChooseRulePlugin
-                               new PropertyPlugin(), // PropertyPlugin
-                               new CollectionPlugin(), // CollectionPlugin
-                               new QueuePlugin(), // QueuePlugin
-                               new ConditionalRulePlugin(), // ConditionalRulePlugin
-                               new DebugInfoPlugin(), // DebugInfoPlugin
-                               new SchedulingPoliciesPlugin(), // SchedulingPolicies
-                               new ExtendRulePlugin(), // ExtendRulePlugin
-                               new SetPlugin(), // SetPlugin
-                               new ForallRulePlugin(), // ForallRulePlugin
-                               // SignalsPlugin
-                               new SignaturePlugin(), // SignaturePlugin
-                               // GraphPlugin
-                               new StackPlugin(), // StackPlugin
-                               new IOPlugin(), // IOPlugin
-                               new StandardPlugins(), // StandardPlugins
-                               // JasminePlugin
-                               new StepPlugin(), // StepPlugin
-                               new KernelExtensionsPlugin(), // KernelExtensionsPlugin
-                               new StringPlugin(), // StringPlugin
-                               new LetRulePlugin(), // LetRulePlugin
-                               new TabBlocksPlugin(), // TabBlocksPlugin
-                               new ListPlugin(), // ListPlugin
-                               new TimePlugin(), // TimePlugin
-                               new MapPlugin(), // MapPlugin
-                               new TreePlugin(), // TreePlugin
-                               // MathPlugin
-                               new TurboASMPlugin() // TurboASMPlugin
-            ]
-
-            for (Plugin p : p2Load) {
-                allPlugins.put(p.getName(), p);
-            }
-
-        }
-    }
+    def CoreASMEngine engine;
 
     public CoreAsmVisualisation(final UUID sessionId, final String templatePath) {
         super(sessionId, templatePath);
@@ -104,11 +20,11 @@ public class CoreAsmVisualisation extends BMotion {
 
     @Override
     public Object executeEvent(final String event, final data) throws ImpossibleStepException {
-        e.step();
-        e.waitWhileBusy();
+        engine.step();
+        engine.waitWhileBusy();
         StringBuffer output = new StringBuffer();
         String state = getCurrentState();
-        output.append("{ \"mode\": \"" + e.getEngineMode().toString() + "\", \"state\": " + state);
+        output.append("{ \"mode\": \"" + engine.getEngineMode().toString() + "\", \"state\": " + state);
         checkObserver()
         return output.toString();
     }
@@ -117,7 +33,7 @@ public class CoreAsmVisualisation extends BMotion {
      * Returns the value of a location    */
     @Override
     public Object eval(String lname) {
-        State state = e.getState();
+        State state = engine.getState();
         Map<String, FunctionElement> funcs = state.getFunctions();
 
         String value = "";
@@ -155,7 +71,7 @@ public class CoreAsmVisualisation extends BMotion {
     }
 
     public String getCurrentState() {
-        Map<String, AbstractUniverse> universeEntries = e.getState()
+        Map<String, AbstractUniverse> universeEntries = engine.getState()
                 .getUniverses();
 
         /*
@@ -201,7 +117,7 @@ public class CoreAsmVisualisation extends BMotion {
         }
 
         // functions
-        Map<String, FunctionElement> felems = e.getState().getFunctions();
+        Map<String, FunctionElement> felems = engine.getState().getFunctions();
 
         functionsWriter.write("\"functions\" : {");
         for (String key : felems.keySet()) {
@@ -264,7 +180,7 @@ public class CoreAsmVisualisation extends BMotion {
 
     public List<String> getErrors(String arg0, String arg1) {
         List<String> errors = new ArrayList<String>();
-        errors.add(e.getEngineMode().toString());
+        errors.add(engine.getEngineMode().toString());
 
         // TODO: get better errors
         return errors;
@@ -274,15 +190,15 @@ public class CoreAsmVisualisation extends BMotion {
     @Override
     void loadModel(File modelFile, boolean force) {
         log.info "Loading model " + modelFile
-        if (e == null)
-            e = new AsmToolEngine();
+        if (engine == null) {
+            engine = CoreASMEngineFactory.createEngine();
+        }
         try {
             FileInputStream fi = new FileInputStream(modelFile)
-            e.loadSpecification(new InputStreamReader(fi));
-            e.waitWhileBusy();
-            e.initialize();
-            e.waitWhileBusy();
-
+            engine.initialize();
+            engine.waitWhileBusy();
+            engine.loadSpecification(new InputStreamReader(fi));
+            engine.waitWhileBusy();
         } catch (Exception e) {
             e.printStackTrace()
         }
