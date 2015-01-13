@@ -6,7 +6,12 @@
         <meta name="bms.script" content="extrema.groovy" />
         <meta name="bms.tool" content="CoreAsm" />
         <meta name="bms.model" content="model/extrema.casm" />
-        <script data-main="extrema" src="/bms/libs/requirejs/require.js"></script>
+        <script src="/bms/libs/requirejs/require.js"></script>
+        <script>
+            require(['/bms/libs/coreasm/config.js'], function () {
+                require(['extrema']);
+            });
+        </script>
     </head>
     <body>
         <!-- Put your visualisation here SVG/HTML/CSS etc. -->

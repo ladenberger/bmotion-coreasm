@@ -14,14 +14,6 @@ def customObserver = [
 // after every state change
 bms.registerObserver(customObserver)
 
-// Example method observer
-// This observer calls a method called "mymethod"
-// on the client side
-callMethod("mymethod") {
-    data([foo: "bar", foo2: "bar2"])
-    register(bms)
-}
-
 // Example transform observer. In this case the value
 // to be set is a Groovy closure that returns
 // the value of evaluating the expression "ruleElement"
@@ -36,6 +28,14 @@ transform("#mydiv") {
 // Register a method called "groovyMethod" on the server
 // side that can be called from the client side
 bms.registerMethod("groovyMethod", { data ->
+    // The data contains a json object from the client side
+    System.out.println(data)
+    // Do some stuff on server side ...
+    // ... and return a json object to the client
+    return [foo: "bar"]
+})
+
+bms.registerMethod("mymethod", { data ->
     // The data contains a json object from the client side
     System.out.println(data)
     // Do some stuff on server side ...
