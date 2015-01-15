@@ -15,6 +15,10 @@
             <name>cobra</name>
             <url>http://cobra.cs.uni-duesseldorf.de/artifactory/repo</url>
         </repository>
+	<repository>
+		<id>ossrh</id>
+		<url>https://oss.sonatype.org/content/repositories/snapshots/org/coreasm/</url>
+	</repository>
     </repositories>
 
     <scm>
@@ -116,7 +120,7 @@
         <dependency>
             <groupId>org.coreasm</groupId>
             <artifactId>org.coreasm.engine</artifactId>
-            <version>1.6.3-SNAPSHOT</version>
+            <version>1.6.5-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
